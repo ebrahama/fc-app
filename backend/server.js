@@ -1,25 +1,32 @@
 const express = require("express");
 const dotenv = require("dotenv");
-
 const {chat} = require("./data/data");
+const condb = require("./config/db");
+const userRoutes = require("./routes/userRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+
+const { notFound, errorHandler } = require("./middleware/errorMiddleware")
+
 
 const app = express();
 dotenv.config();
+condb()
 
-
+app.use(express.json()); 
 
 app.get("/", (req,res)=>{
   res.send("fr api work");
 });
 
-app.get("/api/chat", (req,res)=>{
-    res.send(chat);
-  });
+app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes);
 
-  app.get("/api/chat/:id", (req,res)=>{
-    const ca = chat.find((c)=> c._id === req.params.id );
-    res.send(ca);
-  });
+
+app.use(notFound)
+app.use(errorHandler)
+
+
+
  
 const PORT = process.env.PORT || 5000;
 
