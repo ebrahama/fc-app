@@ -15,22 +15,20 @@ const app = express();
 
 app.use(express.json()); 
 
-// app.get("/", (req,res)=>{
-//   res.send("f api work");
-// });
+
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
 // deployment
-const __dirname2 = path.resolve();
+ __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname2, "/frontend/build")));
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
 
   app.get("*", (req, res) =>{
-      res.sendFile(path.resolve(__dirname2, "frontend", "build", "index.html"));
+      res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
    });
 } else {
   app.get("/", (req, res) => {
